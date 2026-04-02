@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { AtSign, User, Mail, Lock, LucideIcon } from "lucide-react-native";
+import { AtSign, User, Mail, Lock, LucideIcon, ChevronLeft } from "lucide-react-native";
+import { Colors } from "../../src/constants/colors";
 
 const SignUp = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const SignUp = () => {
     setForm((prev) => ({ ...prev, [field]: value }));
 
   const handleSubmit = () => {
-    router.push("/home");
+    router.push("/(auth)/enter-code");
   };
 
   const fields: {
@@ -21,51 +22,60 @@ const SignUp = () => {
     icon: LucideIcon;
     placeholder: string;
     secure: boolean;
+    keyboardType?: "default" | "email-address";
   }[] = [
-    { key: "username", label: "Usuário", icon: AtSign, placeholder: "joaodoe", secure: false },
-    { key: "name", label: "Nome", icon: User, placeholder: "João Silva", secure: false },
-    { key: "email", label: "E-mail", icon: Mail, placeholder: "ex. joao@exemplo.com", secure: false },
-    { key: "password", label: "Senha", icon: Lock, placeholder: "********", secure: true },
+    { key: "name", label: "Nome completo", icon: User, placeholder: "João Silva", secure: false },
+    { key: "email", label: "E-mail", icon: Mail, placeholder: "ex. joao@exemplo.com", secure: false, keyboardType: "email-address" },
+    { key: "password", label: "Senha", icon: Lock, placeholder: "••••••••", secure: true },
   ];
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>{"<"}</Text>
+          <ChevronLeft size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Criar Conta</Text>
-        <Text style={styles.subtitle}>Comece sua jornada de saúde conosco</Text>
+        <Text style={styles.title}>Nova Conta</Text>
+        <Text style={styles.subtitle}>Crie a sua conta em poucos passos</Text>
 
         <View style={styles.form}>
-          {fields.map(({ key, label, icon: Icon, placeholder, secure }) => (
+          {fields.map(({ key, label, icon: Icon, placeholder, secure, keyboardType }) => (
             <View key={key} style={styles.inputGroup}>
               <Text style={styles.label}>{label}</Text>
               <View style={styles.inputWrapper}>
-                <Icon size={18} color="#71717a" style={styles.inputIcon} />
+                <Icon size={18} color={Colors.textSecondary} style={styles.inputIcon} />
                 <TextInput
                   placeholder={placeholder}
+                  placeholderTextColor={Colors.textSecondary}
                   value={form[key]}
                   onChangeText={(val) => update(key, val)}
                   style={styles.input}
                   secureTextEntry={secure}
-                  autoCapitalize={key === 'email' ? 'none' : 'sentences'}
+                  autoCapitalize={key === "email" ? "none" : "words"}
+                  keyboardType={keyboardType ?? "default"}
                 />
               </View>
             </View>
           ))}
 
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Cadastrar</Text>
+            <Text style={styles.submitButtonText}>Criar Conta</Text>
           </TouchableOpacity>
         </View>
 
         <Text style={styles.termsText}>
-          Ao clicar em "Cadastrar", você concorda com nossos{" "}
-          <Text style={styles.boldText}>Termos de Uso</Text> e{" "}
-          <Text style={styles.boldText}>Política de Privacidade</Text>.
+          Ao continuar, você concorda com nossos{" "}
+          <Text style={styles.linkText}>Termos de Uso</Text> e{" "}
+          <Text style={styles.linkText}>Política de Privacidade</Text>.
         </Text>
+
+        <TouchableOpacity style={styles.signInRow} onPress={() => router.push("/(auth)/signin")}>
+          <Text style={styles.footerText}>
+            Já tem uma conta?{" "}
+            <Text style={styles.linkTextBold}>Entrar</Text>
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -74,7 +84,7 @@ const SignUp = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background,
   },
   scrollContent: {
     paddingHorizontal: 24,
@@ -82,72 +92,94 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: Colors.surface,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 24,
   },
-  backButtonText: {
-    fontSize: 24,
-  },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: '#000000',
+    fontSize: 28,
+    fontWeight: "700",
+    color: Colors.textPrimary,
+    marginBottom: 4,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#71717a',
-    marginTop: 4,
+    fontSize: 15,
+    color: Colors.textSecondary,
   },
   form: {
-    marginTop: 24,
+    marginTop: 28,
     gap: 16,
   },
   inputGroup: {
     gap: 6,
   },
   label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#000000',
+    fontSize: 13,
+    fontWeight: "600",
+    color: Colors.textPrimary,
   },
   inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f4f4f5',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.surface,
     borderRadius: 12,
     paddingHorizontal: 16,
-    height: 56,
+    height: 52,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   inputIcon: {
-    marginRight: 12,
+    marginRight: 10,
   },
   input: {
     flex: 1,
-    fontSize: 16,
-    color: '#000000',
+    fontSize: 15,
+    color: Colors.textPrimary,
   },
   submitButton: {
-    backgroundColor: '#000000',
-    height: 56,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.primary,
+    height: 52,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 8,
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   submitButtonText: {
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   termsText: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 12,
-    color: '#71717a',
+    color: Colors.textSecondary,
     marginTop: 20,
     lineHeight: 18,
   },
-  boldText: {
-    color: '#000000',
-    fontWeight: '600',
+  linkText: {
+    color: Colors.primary,
+    fontWeight: "500",
+  },
+  linkTextBold: {
+    color: Colors.primary,
+    fontWeight: "700",
+  },
+  signInRow: {
+    alignItems: "center",
+    marginTop: 16,
+  },
+  footerText: {
+    fontSize: 14,
+    color: Colors.textSecondary,
   },
 });
 

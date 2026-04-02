@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { Colors } from "../src/constants/colors";
 
 const welcomeHero = require("../assets/images/welcome-hero.png");
 
@@ -51,40 +52,45 @@ const Welcome = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#FFFFFF" },
+  container: { flex: 1, backgroundColor: Colors.background },
   heroSection: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32 },
   heroImage: { width: 280, height: 280 },
   contentSection: { paddingHorizontal: 32, paddingBottom: 40 },
   textGroup: { alignItems: "center", marginBottom: 32 },
   title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#000000",
+    fontSize: 26,
+    fontWeight: "700",
+    color: Colors.textPrimary,
     textAlign: "center",
     lineHeight: 34,
-    marginBottom: 12,
+    marginBottom: 10,
   },
-  subtitle: { fontSize: 16, color: "#71717A", textAlign: "center" },
-  buttonGroup: { gap: 12, marginBottom: 32 },
+  subtitle: { fontSize: 15, color: Colors.textSecondary, textAlign: "center", lineHeight: 22 },
+  buttonGroup: { gap: 12, marginBottom: 28 },
   primaryButton: {
-    backgroundColor: "#000000",
-    height: 56,
-    borderRadius: 16,
+    backgroundColor: Colors.primary,
+    height: 52,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  primaryButtonText: { color: "#FFFFFF", fontSize: 16, fontWeight: "600" },
+  primaryButtonText: { color: Colors.white, fontSize: 16, fontWeight: "600" },
   secondaryButton: {
-    height: 56,
-    borderRadius: 16,
+    height: 52,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "#000000",
+    borderWidth: 1.5,
+    borderColor: Colors.primary,
   },
-  secondaryButtonText: { color: "#000000", fontSize: 16, fontWeight: "600" },
-  footerText: { textAlign: "center", fontSize: 12, color: "#71717A" },
-  linkText: { textDecorationLine: "underline", fontWeight: "500", color: "#000000" },
+  secondaryButtonText: { color: Colors.primary, fontSize: 16, fontWeight: "600" },
+  footerText: { textAlign: "center", fontSize: 12, color: Colors.textSecondary },
+  linkText: { textDecorationLine: "underline", fontWeight: "500", color: Colors.primary },
 });
 
 export default Welcome;

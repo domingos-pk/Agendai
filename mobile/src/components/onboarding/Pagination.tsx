@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { Colors } from '../../constants/colors';
 
 interface PaginationProps {
   total: number;
@@ -25,7 +26,7 @@ const Pagination = ({ total, current }: PaginationProps) => {
 // Componente Dot separado para animações individuais
 const Dot = ({ isActive }: { isActive: boolean }) => {
   const width = useSharedValue(isActive ? 28 : 8);
-  const backgroundColor = useSharedValue(isActive ? '#E54F2D' : '#d4d4d8');
+  const backgroundColor = useSharedValue(isActive ? Colors.primary : '#D1D5DB');
 
   useEffect(() => {
     if (isActive) {
@@ -34,14 +35,14 @@ const Dot = ({ isActive }: { isActive: boolean }) => {
         stiffness: 300,
         mass: 1,
       });
-      backgroundColor.value = withTiming('#E54F2D'); // hsl(12, 90%, 54%)
+      backgroundColor.value = withTiming(Colors.primary);
     } else {
       width.value = withSpring(8, {
         damping: 25,
         stiffness: 300,
         mass: 1,
       });
-      backgroundColor.value = withTiming('#d4d4d8'); // hsl(220, 14%, 85%)
+      backgroundColor.value = withTiming('#D1D5DB');
     }
   }, [isActive, backgroundColor, width]);
 

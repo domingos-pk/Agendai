@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Mail, ChevronLeft } from "lucide-react-native";
+import { Lock, ChevronLeft } from "lucide-react-native";
 import { Colors } from "../../src/constants/colors";
 
-const ForgotPassword = () => {
+const NewPassword = () => {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+
+  const isValid = password.length >= 6 && password === confirm;
 
   const handleSubmit = () => {
-    router.push("/(auth)/enter-code");
+    router.replace("/(auth)/signin");
   };
 
   return (
@@ -20,41 +23,53 @@ const ForgotPassword = () => {
           <ChevronLeft size={24} color={Colors.textPrimary} />
         </TouchableOpacity>
 
-        <Text style={styles.title}>Esqueceu a Senha?</Text>
+        <Text style={styles.title}>Nova Senha</Text>
         <Text style={styles.subtitle}>
-          Digite o seu e-mail cadastrado e enviaremos um código de verificação.
+          Crie uma nova senha segura para a sua conta.
         </Text>
 
         <View style={styles.form}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>E-mail</Text>
+            <Text style={styles.label}>Nova senha</Text>
             <View style={styles.inputWrapper}>
-              <Mail size={18} color={Colors.textSecondary} style={styles.inputIcon} />
+              <Lock size={18} color={Colors.textSecondary} style={styles.inputIcon} />
               <TextInput
-                placeholder="ex. joao@exemplo.com"
+                placeholder="••••••••"
                 placeholderTextColor={Colors.textSecondary}
-                value={email}
-                onChangeText={setEmail}
+                value={password}
+                onChangeText={setPassword}
                 style={styles.input}
-                keyboardType="email-address"
-                autoCapitalize="none"
+                secureTextEntry
               />
             </View>
           </View>
 
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitButtonText}>Enviar Código</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Confirmar senha</Text>
+            <View style={styles.inputWrapper}>
+              <Lock size={18} color={Colors.textSecondary} style={styles.inputIcon} />
+              <TextInput
+                placeholder="••••••••"
+                placeholderTextColor={Colors.textSecondary}
+                value={confirm}
+                onChangeText={setConfirm}
+                style={styles.input}
+                secureTextEntry
+              />
+            </View>
+            {confirm.length > 0 && password !== confirm && (
+              <Text style={styles.errorText}>As senhas não coincidem</Text>
+            )}
+          </View>
+
+          <TouchableOpacity
+            style={[styles.submitButton, !isValid && styles.submitButtonDisabled]}
+            onPress={handleSubmit}
+            disabled={!isValid}
+          >
+            <Text style={styles.submitButtonText}>Salvar Senha</Text>
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Lembrou a senha?{" "}
-          <Text style={styles.linkText} onPress={() => router.push("/(auth)/signin")}>
-            Entrar
-          </Text>
-        </Text>
       </View>
     </SafeAreaView>
   );
@@ -120,35 +135,34 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.textPrimary,
   },
+  errorText: {
+    fontSize: 12,
+    color: Colors.error,
+    marginTop: 2,
+  },
   submitButton: {
     backgroundColor: Colors.primary,
     height: 52,
     borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 8,
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
+  submitButtonDisabled: {
+    backgroundColor: Colors.border,
+    shadowOpacity: 0,
+    elevation: 0,
+  },
   submitButtonText: {
     color: Colors.white,
     fontSize: 16,
     fontWeight: "600",
   },
-  footer: {
-    paddingBottom: 40,
-    alignItems: "center",
-  },
-  footerText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-  },
-  linkText: {
-    color: Colors.primary,
-    fontWeight: "700",
-  },
 });
 
-export default ForgotPassword;
+export default NewPassword;

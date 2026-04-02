@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-// Importações presumidas de componentes que também devem ser migrados para RN
 import OnboardingItem from "../src/components/onboarding/OnboardingItem";
 import Pagination from "../src/components/onboarding/Pagination";
 import { ONBOARDING_SLIDES } from "../src/constants/onboarding";
+import { Colors } from "../src/constants/colors";
 
 const Onboarding = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -64,7 +64,7 @@ const Onboarding = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.background,
   },
   header: {
     flexDirection: 'row',
@@ -73,9 +73,9 @@ const styles = StyleSheet.create({
     height: 80,
   },
   skipText: {
-    color: '#71717a',
+    color: Colors.primary,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   slideContainer: {
     flex: 1,
@@ -88,14 +88,19 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   button: {
-    backgroundColor: '#000000',
-    height: 56,
-    borderRadius: 16,
+    backgroundColor: Colors.primary,
+    height: 52,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -83,7 +83,7 @@ const Home = () => {
           <View style={styles.appointmentCard}>
             <View style={styles.appointmentInfo}>
               <Text style={styles.doctorName}>Dr. Shaun Murphy</Text>
-              <Text style={styles.specialty}>Especialista em Cirurgião Geral</Text>
+              <Text style={styles.specialty}>Especialista em Cirurgia Geral</Text>
 
               <View style={styles.dateTimeContainer}>
                 <View style={styles.dateTimeItem}>
@@ -128,7 +128,7 @@ const Home = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Doutores Populares</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('../doctors')}>
               <Text style={styles.seeAll}>Ver Todos</Text>
             </TouchableOpacity>
           </View>

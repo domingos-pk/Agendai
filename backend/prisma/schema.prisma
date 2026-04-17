@@ -13,15 +13,12 @@ datasource db {
   provider = "postgresql"
 }
 
-model Favorite {
+model User {
   id        Int      @id @default(autoincrement())
-  userId    Int      @map("userID")
-  recipeId  Int      @map("recipeID")
-  title     String
-  image     String?
-  cookTime  Int?     @map("cookTime")
-  servings  Int?
+  name      String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now()) @map("createdAt")
 
-  @@map("favorites")
+  @@map("users")
 }
